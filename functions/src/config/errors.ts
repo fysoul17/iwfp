@@ -65,3 +65,10 @@ export const PromotionDataMissingError = new functions.https.HttpsError(
   "not-found",
   "The promotion data is missing. Please check if the request object is properly constructed"
 );
+
+// Shopping category related errors
+
+export const ShoppingCategoryDataMissingError = new functions.https.HttpsError(
+  "not-found",
+  "The shopping category data is missing"
+);

@@ -1,10 +1,12 @@
-import { Promotion } from "../../interfaces/interfaces";
+import { Promotion, ShoppingCategory } from "../../interfaces/interfaces";
 import Provider from "../../provider";
 import {
   PromotionIdMissingError,
   CreditCardNotExistError,
   PromotionAlreadyExistError,
+  ShoppingCategoryDataMissingError,
 } from "../../config/errors";
+import { setShoppingCategory } from "./set_category";
 
 export async function setPromotion(
   userId: string,
@@ -23,6 +25,15 @@ export async function setPromotion(
         throw PromotionAlreadyExistError;
       } else {
         await promoRef.set(promotion.toJSON());
+        if (promotion.category) {
+          await setShoppingCategory(
+            userId,
+            ShoppingCategory.create(promotion.category),
+            provider
+          );
+        } else {
+          throw ShoppingCategoryDataMissingError;
+        }
       }
     } else {
       throw PromotionIdMissingError;
